@@ -49,18 +49,21 @@
                 transparent: false,
                 continuousWorld: true,
             });
+        
 
-        /*
-        var wms = L.tileLayer.wms("http://api.maps.vic.gov.au/geowebcache/service/wmts?", {
-                layers: ['HYBRID_CARTO'],
-                cached: 'Cached',
-                format: 'PNG',
-                transparent: false,
+        
+        var wms2 = L.tileLayer.wms("http://cfasisw02-test.cfa-test.vic.gov.au/arcgis/services/SDP/SDP2_1_RISK_135/MapServer/WMSServer", {
+                layers: '7',
+                format: 'png',
+                version: '1.3.0',
+                transparent: true,
                 continuousWorld: true,
+                tiled: true
             });
-        */
+        
 
             wms.addTo(map);
+            wms2.addTo(map);
 
         // Group overlays
         //var overlayMaps = {
