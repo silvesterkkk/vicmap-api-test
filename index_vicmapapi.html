@@ -1,0 +1,84 @@
+<!doctype html>
+<html>
+<head>
+
+  <meta charset="utf-8">
+  <title>leaflet example</title>
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" type="text/css" href="style.css" />
+  <!--[if lte IE]>
+    <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link rel="stylesheet" href="leaflet/dist/leaflet.css" />
+  <!--[if lte IE 8]>
+    <link rel="stylesheet" href="leaflet/dist/leaflet.ie.css" />
+  <![endif]-->
+  <script type="text/javascript" src="leaflet/dist/leaflet.js"></script>
+
+  <script type="text/javascript" src="http://116.240.195.134/vicmapapi/js/vicmapapi.js"></script>
+
+  <script type="text/javascript" src="rfs.js"></script>
+  
+  <script type="text/javascript">
+
+    window.onload = function () {
+    //$( document ).ready(function() {
+
+        // Marker layers are grouped here
+        //var marker_01 = L.marker([-37.8557332,145.1634619]).bindPopup('Hello test'),
+        //marker_02 = L.marker([-37.831808, 144.983855]).bindPopup('Hello test 2');
+        
+        //var cities = L.layerGroup([marker_01,marker_02]);
+        
+        
+        // Set initial map scale and centre
+        var map = new L.map('map', {
+            continuousWorld: true,
+            worldCopyJump: false,
+            center: [-37.8557332,145.1634619],
+            zoom: 9
+            });
+
+        //var vicmapapi = new OpenLayers.Vicmap.map("map");
+
+
+        var wms = L.tileLayer.wms("http://api.maps.vic.gov.au/geowebcacheWM/service/wms?VERSION=1.1.1&TILED=true", {
+                layers: ['WEB_MERCATOR'],
+                format: 'image/png',
+                transparent: false,
+                continuousWorld: true,
+            });
+
+        /*
+        var wms = L.tileLayer.wms("http://api.maps.vic.gov.au/geowebcache/service/wmts?", {
+                layers: ['HYBRID_CARTO'],
+                cached: 'Cached',
+                format: 'PNG',
+                transparent: false,
+                continuousWorld: true,
+            });
+        */
+
+            wms.addTo(map);
+
+        // Group overlays
+        //var overlayMaps = {
+        //    "OpenweatherRain": weather,
+        //    "Cities": cities,
+        //    "Wilsons Prom": wilsonsprom
+        //};
+
+        // Add grouped layers to the map
+        //L.control.layers(wms, overlayMaps).addTo(map);
+
+      };
+
+  </script>
+
+</head>
+
+<body>
+  <div id="map"></div>
+</body>
+</html>

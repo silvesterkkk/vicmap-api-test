@@ -1,0 +1,63 @@
+<!doctype html>
+<html>
+<head>
+
+  <meta charset="utf-8">
+  <title>leaflet example</title>
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" type="text/css" href="style.css" />
+  <!--[if lte IE]>
+    <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link rel="stylesheet" href="leaflet/dist/leaflet.css" />
+  <!--[if lte IE 8]>
+    <link rel="stylesheet" href="leaflet/dist/leaflet.ie.css" />
+  <![endif]-->
+  <script type="text/javascript" src="leaflet/dist/leaflet.js"></script>
+  
+  <script type="text/javascript" src="http://116.240.195.134/vicmapapi/js/vicmapapi.js"></script>
+
+  <script type="text/javascript" src="rfs.js"></script>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/0.4.0/MarkerCluster.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/0.4.0/MarkerCluster.Default.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/0.4.0/leaflet.markercluster-src.js"></script>
+
+  <script src="rfs.js"></script>
+  <script src="addressPoints.js"></script>
+  
+</head>
+
+<body>
+
+    <div id="map"></div>
+    <span>Mouse over a cluster to see the bounds of its children and click a cluster to zoom to those bounds</span>
+
+    <script type="text/javascript"> 
+
+
+        var tiles = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+                maxZoom: 18,
+                attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+            }),
+            latlng = L.latLng(-37.8557332,145.1634619);
+
+        var map = L.map('map', {center: latlng, zoom: 9, layers: [tiles]});
+
+
+        var markers = L.markerClusterGroup();
+        
+        for (var i = 0; i < addressPoints.length; i++) {
+            var a = addressPoints[i];
+            var title = a[2];
+            var marker = L.marker(new L.LatLng(a[0], a[1]), { title: title });
+            marker.bindPopup(title);
+            markers.addLayer(marker);
+        }
+
+        map.addLayer(markers);
+
+    </script>
+</body>
+</html>

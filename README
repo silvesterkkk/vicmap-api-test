@@ -1,0 +1,30 @@
+Leaflet Application Testing
+
+This is first attempt creating small mapping application using leaflet js lib.
+
+Update (24/02/2015):
+
+index.html contains
+	- Add following four basemaps:
+		OSM
+		OSM grayscale
+		ESRI Imagery
+		CartoDB
+		STAMEN
+
+	- Add two custom markers
+		city
+		Wilsons prom
+
+	- Add WMS feed from openweather rain map
+
+	- GroupLayer method used to group basemaps.
+
+index_vicmapapi.html contains
+	- Attempted to use vicmap API as a basemap.
+		Only able to use it as WMS feed.
+		Usage of Vicmap API may require license.
+		
+index_vicmapapi_02.html contains
+	- sample code from DEPI to bring WFS service into openlayer with Vicmap API switcher control.
+	- Cross domain method added to be utilised to bring external URL's WFS into the map.

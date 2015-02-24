@@ -1,0 +1,99 @@
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>VicMap API - WFS example</title>
+    
+    <link rel='stylesheet' type='text/css' href='http://api.maps.vic.gov.au/vicmapapi/css/vicmapapi.css' />
+    <link rel='stylesheet' type='text/css' href='http://api.maps.vic.gov.au/vicmapapi/css/base.css' />
+    <link rel='stylesheet' type='text/css' href='http://api.maps.vic.gov.au/vicmapapi/css/theme.css' />
+    
+    <script src='http://api.maps.vic.gov.au/vicmapapi/js/vicmapapi.js' type="text/javascript"></script>
+    <script src='http://api.maps.vic.gov.au/vicmapapi/js/deprecated.js' type="text/javascript"></script>
+
+    <script type="text/javascript" src="http://116.240.195.134/vicmapapi/js/vicmapapi.js"></script>
+
+    <script type="text/javascript">
+
+    var WMS_URL = "http://services.land.vic.gov.au/catalogue/publicproxy/guest/sdm_geoserver/wms";
+
+      function init()
+      {
+          // should add the following default controls
+          // "map" corresponds to the id of the div hosting the map
+          var map = new OpenLayers.Vicmap.Map("map");
+
+          OpenLayers.ProxyHost = "/cgi-bin/proxy.cgi?url=";
+
+          var layer = new OpenLayers.Layer.WMS(
+        'airports',
+        WMS_URL,
+        {
+            layers: 'sii:VMLITE.VMLITE_TR_AIRPORT',
+            format: 'image/png',
+            transparent: true
+        },
+        {
+            tileSize: new OpenLayers.Size(512, 512),
+            isBaseLayer: false
+        }
+    );
+    layer.alpha = true;
+    map.addLayer(layer);
+    
+    setupGetFeatureInfo(map);
+}
+
+function setupGetFeatureInfo(map) {
+  var format = 'image/png';
+    map.events.register('click', map, function (e) {
+      document.getElementById('featureInfo').innerHTML = "Loading... please wait...";
+      var params = {
+      REQUEST: "GetFeatureInfo",
+      EXCEPTIONS: "application/vnd.ogc.se_xml",
+      BBOX: map.getExtent().toBBOX(),
+      X: e.xy.x,
+      Y: e.xy.y,
+      INFO_FORMAT: 'text/html',
+      QUERY_LAYERS: 'sii:VMLITE.VMLITE_TR_AIRPORT',
+      FEATURE_COUNT: 50,
+      Srs: 'EPSG:3111',
+      Layers: 'sii:VMLITE.VMLITE_TR_AIRPORT',
+      Styles: '',
+      WIDTH: map.size.w,
+      HEIGHT: map.size.h,
+      format: format};
+      
+      
+//      OpenLayers.loadURL(WMS_URL, params, this, setHTML, setHTML1);
+      OpenLayers.Request.GET(WMS_URL, params, this, setHTML, setHTML1);
+      OpenLayers.Event.stop(e);
+      
+      }); 
+}
+
+//sets the HTML provided into the 'featureInfo' element
+function setHTML(response){
+  var msg = response.responseText;
+  if (msg == "") msg = "response string was empty"; 
+  var b = msg.indexOf("<body");
+  var t = msg.indexOf("<table");
+  if (b > 0 && t < b)
+  {
+    msg = msg.substring(0,b+5) + "<p><em>Nothing found at the point you clicked<\/em><\/p>" + msg.substring(b+6);
+    
+  } 
+  document.getElementById('featureInfo').innerHTML = msg;
+}; 
+function setHTML1(response){
+  var msg = response.responseText;
+  if (msg == "") msg = "response string was empty"; 
+  document.getElementById('featureInfo').innerHTML = msg;
+}; 
+
+
+  </script>
+  <head>
+  <body onload="init()">
+  <div id="map" style="height:800px; width:1200px; border:1px solid #000000;"></div>
+  </body>
+</html>
